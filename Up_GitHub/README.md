@@ -1,5 +1,9 @@
 # 将项目代码上传至 GitHub 库的几种方法
 
+### 教学视频链接：
+
+> https://www.bilibili.com/video/BV1Hq7zzGEPt/?vd_source=12099d09fddf896d1fc41903a69054da
+
 ## 步骤 1：下载 git
 
 ### git 官网地址：https://git-scm.com/?hl=zh-cn
@@ -91,9 +95,14 @@
 
 **接下来就是按照提示登陆链接 GitHub 账号，链接好之后顶部会出现你的 GitHub 仓库，选择一个你要上传到的仓库,并输入本次上传的文件的命名**
 
-### 具体操作过程参考我的教学视频：
+> **如果在上传过程中遇到如下报错：**  
+> fatal: unable to access 'https://github.com/chuyu2025/chu-star.git/': SSL certificate problem: unable to get local issuer certificate  
+> **可以在终端中输入如下命令**  
+> git config --global http.proxy http://127.0.0.1:7890  
+> **用以下命令查看设置是否成功**  
+> git config --global -l
 
-> https://www.bilibili.com/video/BV1Hq7zzGEPt/?vd_source=12099d09fddf896d1fc41903a69054da
+**这条命令的作用是为 Git 配置全局 HTTP 代理,这意味着，当你使用 Git 进行网络操作（例如从远程仓库拉取或推送代码）时，Git 将通过指定的代理服务器进行连接。**
 
 ### 目前博主也没有涉及到很大的项目编辑，所以这两种上传项目的方式暂时已经足够我使用了，或者对于学生党来讲应该是足够的，等到以后博主不得不用到 git 更高阶的用法时再继续学习继续分享。
 
