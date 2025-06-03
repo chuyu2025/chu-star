@@ -121,4 +121,8 @@
 
 > python -m venv .venv
 
+### 如果终端路径前没有出现(.venv)标志，说明 VS Code 中没有设置自动激活，此时可以选择手动激活，在终端输入：
+
+> .\.venv\Scripts\activate.bat
+
 ### 在虚拟环境中下载的包会存储在.env 文件中的 site-packes 里
