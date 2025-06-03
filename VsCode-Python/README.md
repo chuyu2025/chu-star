@@ -27,10 +27,10 @@
   <img src="picture/one.png" width="500" alt="GitHub"/>
 </p>  
 <p align="center">
-  <img src="Picture/two.png" width="500" alt="GitHub"/>
+  <img src="picture/two.png" width="500" alt="GitHub"/>
 </p>   
 <p align="center">
-  <img src="Picture/three.png" width="500" alt="GitHub"/>
+  <img src="picture/three.png" width="500" alt="GitHub"/>
 </p>
 
 ### 查看环境变量是否添加
@@ -42,7 +42,7 @@
 > python --version
 
 <p align="center">
-  <img src="Picture/four.png" width="700
+  <img src="picture/four.png" width="700
   " alt="GitHub"/>
 </p>
 
@@ -54,11 +54,11 @@
 > python3.12 --version
 
 <p align="center">
-  <img src="Picture/five.png" width="700
+  <img src="picture/five.png" width="700
   " alt="GitHub"/>
 </p>  
 <p align="center">
-  <img src="Picture/six.png" width="700
+  <img src="picture/six.png" width="700
   " alt="GitHub"/>
 </p>
 
@@ -71,36 +71,36 @@
 **安装 python 插件**
 
 <p align="center">
-  <img src="Picture/seven.png" width="700
+  <img src="picture/seven.png" width="700
   " alt="GitHub"/>
 </p>
 
 ### 切换 python 解释器
 
 <p align="center">
-  <img src="Picture/eight.png" width="700
+  <img src="picture/eight.png" width="700
   " alt="GitHub"/>
 </p>
 
 ### 设置默认终端
 
 <p align="center">
-  <img src="Picture/nine.png" width="300
+  <img src="picture/nine.png" width="300
   " alt="GitHub"/>
 </p> 
 <p align="center">
-  <img src="Picture/ten.png" width="700
+  <img src="picture/ten.png" width="700
   " alt="GitHub"/>
 </p>
 
 ## 一些便捷式编程设置
 
 <p align="center">
-  <img src="Picture/eleven.png" width="700
+  <img src="picture/eleven.png" width="700
   " alt="GitHub"/>
 </p>   
 <p align="center">
-  <img src="Picture/twelve.png" width="700
+  <img src="picture/twelve.png" width="700
   " alt="GitHub"/>
 </p>
 
@@ -111,7 +111,7 @@
 ### 自动格式化代码
 
 <p align="center">
-  <img src="Picture/thirteen.png" width="400
+  <img src="picture/thirteen.png" width="400
   " alt="GitHub"/>
 </p>
 
