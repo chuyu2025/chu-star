@@ -130,11 +130,11 @@
 
 ### 在虚拟环境中下载的包会存储在.env 文件中的 site-packes 里
 
-### 当你的项目文件有多个需要安装的依赖库时，为了方便可以创建一个 xxx.txt 文件 ,xxx 是可自定义的文件名。
+### 当你的项目文件有多个需要安装的依赖库时，为了方便可以创建一个 requirements.txt 文件 。
 
-### 在 xxx.txt 文件中将包的名字写在里面，然后运行如下命令可一键安装：
+### 在 requirements.txt 文件中将包的名字写在里面，然后运行如下命令可一键安装：
 
-> pip install -r xxx.txt
+> pip install -r requirements.txt
 
 ### 如果可以的话可以给我的 GitHub 打个星或者给我的视频点个赞吗(✧◡✧)
 
