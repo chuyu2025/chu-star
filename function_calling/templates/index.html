@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智能Agent助手</title>
+    <style>
+      body {
+        font-family: "Microsoft YaHei", sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+
+      .chat-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+      }
+
+      .chat-box {
+        height: 500px;
+        overflow-y: auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+
+      .message {
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 5px;
+        max-width: 80%;
+      }
+
+      .user-message {
+        background-color: #e3f2fd;
+        margin-left: auto;
+      }
+
+      .ai-message {
+        background-color: #f5f5f5;
+        margin-right: auto;
+      }
+
+      .input-container {
+        display: flex;
+        gap: 10px;
+      }
+
+      #message-input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #2196f3;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      button:hover {
+        background-color: #1976d2;
+      }
+
+      .email-confirm {
+        display: none;
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #fff3e0;
+        border-radius: 5px;
+      }
+
+      .email-confirm button {
+        margin: 5px;
+      }
+
+      .plot-image {
+        max-width: 100%;
+        margin-top: 10px;
+        border-radius: 5px;
+      }
+
+      .header {
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 10px;
+      }
+
+      .header-title {
+        display: inline-block;
+        border: 2px solid #2196f3;
+        border-radius: 16px;
+        padding: 10px 40px;
+        font-size: 2.1rem;
+        color: #222;
+        background: #fff;
+      }
+
+      .nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        border-bottom: 3px solid #2196f3;
+      }
+
+      .nav-btn {
+        background: none;
+        border: none;
+        outline: none;
+        font-size: 1.2rem;
+        color: #1976d2;
+        padding: 12px 36px;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+      }
+
+      .nav-btn.active,
+      .nav-btn:hover {
+        background: #1976d2;
+        color: #fff;
+        border-radius: 4px 4px 0 0;
+      }
+
+      .main-content {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        margin: 30px auto 0 auto;
+        max-width: 1100px;
+        gap: 30px;
+      }
+
+      @media (max-width: 900px) {
+        .main-content {
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <div class="header-title">小雨~智能AI Agent助手</div>
+    </div>
+
+    <div class="chat-container">
+      <div class="chat-box" id="chat-box"></div>
+      <div class="input-container">
+        <input type="text" id="message-input" placeholder="请输入您的问题..." />
+        <button onclick="sendMessage()">发送</button>
+      </div>
+      <div class="email-confirm" id="email-confirm">
+        <div id="email-content"></div>
+        <button onclick="confirmEmail(true)">确认发送</button>
+        <button onclick="confirmEmail(false)">取消</button>
+      </div>
+    </div>
+
+    <script>
+      let currentEmailData = null;
+
+      function addMessage(content, isUser) {
+        const chatBox = document.getElementById("chat-box");
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `message ${
+          isUser ? "user-message" : "ai-message"
+        }`;
+        messageDiv.textContent = content;
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function addImage(base64Image) {
+        const chatBox = document.getElementById("chat-box");
+        const img = document.createElement("img");
+        img.src = `data:image/png;base64,${base64Image}`;
+        img.className = "plot-image";
+        chatBox.appendChild(img);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function showEmailConfirm(emailData) {
+        currentEmailData = emailData;
+        const emailConfirm = document.getElementById("email-confirm");
+        const emailContent = document.getElementById("email-content");
+        emailContent.innerHTML = `
+                <p><strong>发件人:</strong> ${emailData.FromEmail}</p>
+                <p><strong>收件人:</strong> ${emailData.Recipients}</p>
+                <p><strong>主题:</strong> ${emailData.Subject}</p>
+                <p><strong>内容:</strong> ${emailData.Body}</p>
+            `;
+        emailConfirm.style.display = "block";
+      }
+
+      async function confirmEmail(confirmed) {
+        const emailConfirm = document.getElementById("email-confirm");
+        emailConfirm.style.display = "none";
+
+        if (confirmed) {
+          try {
+            const response = await fetch("/send_email", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(currentEmailData),
+            });
+            const data = await response.json();
+            addMessage(data.response, false);
+          } catch (error) {
+            addMessage("发送邮件时出错：" + error, false);
+          }
+        } else {
+          addMessage("邮件发送已取消，还需要什么帮助吗？", false);
+        }
+        currentEmailData = null;
+      }
+
+      async function sendMessage() {
+        const input = document.getElementById("message-input");
+        const message = input.value.trim();
+
+        if (!message) return;
+
+        addMessage(message, true);
+        input.value = "";
+
+        try {
+          const response = await fetch("/chat", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message }),
+          });
+
+          const data = await response.json();
+
+          if (data.end_conversation) {
+            addMessage(data.response, false);
+            input.disabled = true;
+            return;
+          }
+
+          addMessage(data.response, false);
+
+          if (data.action === "confirm_email") {
+            showEmailConfirm(data.email_data);
+          }
+
+          if (data.image) {
+            addImage(data.image);
+          }
+        } catch (error) {
+          addMessage("发生错误：" + error, false);
+        }
+      }
+
+      // 支持按Enter发送消息
+      document
+        .getElementById("message-input")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            sendMessage();
+          }
+        });
+    </script>
+  </body>
+</html>

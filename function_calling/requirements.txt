@@ -1,0 +1,6 @@
+dotenv
+numpy
+matplotlib
+flask
+scipy
+openai
