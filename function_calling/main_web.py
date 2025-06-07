@@ -9,7 +9,7 @@ from io import BytesIO
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-
+from datetime import datetime
 import json
 from openai import OpenAI
 
@@ -76,10 +76,12 @@ def find_point(target_point, num_data):
     plt.figure(figsize=(10, 8))
 
     # 绘制数据库中的点（蓝色）
-    plt.scatter(data_points[:, 0], data_points[:, 1], c='blue', label='Database Point')
+    plt.scatter(data_points[:, 0], data_points[:, 1],
+                c='blue', label='Database Point')
 
     # 绘制目标点（红色）
-    plt.scatter(target_point[0], target_point[1], c='red', label='Target Point')
+    plt.scatter(target_point[0], target_point[1],
+                c='red', label='Target Point')
 
     # 绘制最近点（黄色星号）
     plt.scatter(nearest_point[0], nearest_point[1],
@@ -102,6 +104,17 @@ def find_point(target_point, num_data):
 
 
 tools = [
+    # 工具1 获取当前时刻的时间
+    {
+        "type": "function",
+        "function": {
+            "name": "get_current_time",
+            "description": "当你想知道现在的时间时非常有用。",
+            # 因为获取当前时间无需输入参数，因此parameters为空字典
+            "parameters": {},
+        },
+    },
+    # 工具2 发送邮件
     {
         "type": "function",
         "function": {
@@ -131,6 +144,7 @@ tools = [
             },
         }
     },
+    # 工具3 查找某点距离数据库中最近的点
     {
         "type": "function",
         "function": {
@@ -152,6 +166,17 @@ tools = [
         }
     }
 ]
+
+# 查询当前时间的工具。返回结果示例："当前时间：2024-04-15 17:15:18。"
+
+
+def get_current_time():
+    # 获取当前日期和时间
+    current_datetime = datetime.now()
+    # 格式化当前日期和时间
+    formatted_time = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    # 返回格式化后的当前时间
+    return f"当前时间：{formatted_time}。"
 
 
 def chat_completion_request(messages, tools=None, tool_choice=None, model=GPT_MODEL):
@@ -255,6 +280,24 @@ def chat():
                     'response': f"查找最近点时出错：{str(e)}",
                     'end_conversation': False
                 })
+        elif fn_name == "get_current_time":
+            try:
+                now_time = get_current_time()
+                response = f"函数输出信息：{now_time}"
+                print(f"【AI】: {response}")
+                conversation_history.append(
+                    {"role": "assistant", "content": response})
+                # 返回当前时间
+                return jsonify({
+                    'response': response,
+                    'end_conversation': False,
+                })
+
+            except Exception as e:
+                print(f"查找时间出错：{e}")
+                conversation_history.append(
+                    {"role": "assistant", "content": "抱歉，无法查找当前时间！"})
+                return jsonify(response)
 
 
 @app.route('/send_email', methods=['POST'])
@@ -284,7 +327,3 @@ if __name__ == "__main__":
     with open('num_data.json', 'r', encoding='utf-8') as f:
         num_data = json.load(f)
     app.run(debug=True)
-
-
-# 帮我发送一封邮件
-# 发件人: remember0202@126.com, 收件人：remember0101@126.com, 发送内容写着一封来自未来胖虎的问候邮件，主题随便
