@@ -127,7 +127,8 @@
   <img src="picture/fourteen.png" width="500
   " alt="GitHub"/>
 </p>
-.venv\Scripts\activate.bat
+
+>.venv\Scripts\activate.bat
 
 ### 在虚拟环境中下载的包会存储在.env 文件中的 site-packes 里
 
