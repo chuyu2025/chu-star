@@ -67,31 +67,33 @@ def comsol_solve(coor_scatter, num_lattice):
     mph.tree(model)
     # 第一种改变几何节点参数的方法
     # 获取几何节点
-    geometries = model / 'geometries'
-    geometry = geometries / 'Geometry'
-    scatterer = geometry / 'scatterer'
-    value = scatterer.property("table")
-    print(value)
+    # geometries = model / 'geometries'
+    # geometry = geometries / 'Geometry'
+    # scatterer = geometry / 'scatterer'
+    # value = scatterer.property("table")
+    # print(value)
+    # coor_list = coor_scatter.astype(str).tolist()
+    # print(coor_list)
+    # scatterer.property("table", coor_list)
+    # value = scatterer.property("table")
+    # print(value)
+    # model.build(geometry)
+
+    #尝试第二种改变几何节点参数的方法
+    java_model = model.java
+    geom = java_model.geom("geom1")
+    #wp = geom.feature('wp1')
+    #geom2d = wp.geom()
+    pol = geom.feature('pol2')
+    table_matrix = pol.getDoubleMatrix('table')
+    print(table_matrix)
+    rows = len(table_matrix)
+    cols = len(table_matrix[0])
+    np_array = np.array([[table_matrix[i][j] for j in range(cols)] for i in range(rows)])
+    print(f"  NumPy 数组:\n{np_array}")
     coor_list = coor_scatter.astype(str).tolist()
     print(coor_list)
-    scatterer.property("table", coor_list)
-    value = scatterer.property("table")
-    print(value)
-    model.build(geometry)
-
-    # #尝试第二种改变几何节点参数的方法
-    # java_model = model.java
-    # geom = java_model.geom('geom1')
-    # #wp = geom.feature('wp1')
-    # #geom2d = wp.geom()
-    # pol = geom.feature('pol2')
-    # table_matrix = pol.getDoubleMatrix('table')
-    # print(table_matrix)
-    # rows = len(table_matrix)
-    # cols = len(table_matrix[0])
-    # np_array = np.array([[table_matrix[i][j] for j in range(cols)] for i in range(rows)])
-    # print(f"  NumPy 数组:\n{np_array}")
-    # pol.set('table', coor_list)
+    pol.set('table', coor_list)
 
     # 运行研究
     print("正在运行研究 研究 1...")
