@@ -9,7 +9,7 @@
 
 - **官方文档**: [https://mph.readthedocs.io](https://mph.readthedocs.io)
 - **GitHub 仓库**: [https://github.com/MPh-py/MPh](https://github.com/MPh-py/MPh)
-- **也可以参考up主的github仓库**: [https://github.com/MPh-py/MPh](https://github.com/MPh-py/MPh)
+- **也可以参考up主的github仓库**: [https://github.com/chuyu2025](https://github.com/chuyu2025)
 
 ---
 
